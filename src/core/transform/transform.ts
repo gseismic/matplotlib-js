@@ -12,6 +12,7 @@ abstract class Transform {
  * 
  */
 abstract class Transform2D extends Transform {
+    protected coord_type: 'data' | 'axes' = 'data';
     protected x: number; // 原点x坐标 | Origin X Coordinate
     protected y: number; // 原点y坐标 | Origin Y Coordinate
     protected width: number; // 变换后的宽度 | Transformed Width
@@ -19,12 +20,13 @@ abstract class Transform2D extends Transform {
     protected xlim: [number, number] = [0, 1]; // x轴范围 | X Axis Range
     protected ylim: [number, number] = [0, 1]; // y轴范围 | Y Axis Range
 
-    constructor(x: number, y: number, width: number, height: number) {
+    constructor(x: number, y: number, width: number, height: number, coord_type: 'data' | 'axes' = 'data') {
         super();
         this.x = x;
         this.y = y;
         this.width = width; 
         this.height = height;
+        this.coord_type = coord_type;
     }
 
     // 将数据坐标转换为绘图坐标 | Convert Data Coordinates to Plotting Coordinates
@@ -72,6 +74,20 @@ abstract class Transform2D extends Transform {
 
     public get_rect(): [number, number, number, number] {
         return [this.x, this.y, this.width, this.height];
+    }
+
+    public get_coord_type(): 'data' | 'axes' {
+        return this.coord_type;
+    }
+
+    public is_equal(transform: Transform2D): boolean {
+        return this.coord_type === transform.coord_type &&
+               this.x === transform.x &&
+               this.y === transform.y &&
+               this.width === transform.width &&
+               this.height === transform.height &&
+               this.xlim === transform.xlim &&
+               this.ylim === transform.ylim;
     }
 }
 

@@ -4,8 +4,8 @@ import { DataTransform2D } from "./data_transform.js";
 // 轴变换类 | Axes Transformation Class
 class AxesTransform2D extends DataTransform2D {
 
-    constructor(x: number, y: number, width: number, height: number) {
-        super(x, y, width, height);
+    constructor(x: number=0, y: number=0, width: number=100, height: number=100, coord_type: 'data' | 'axes' = 'data') {
+        super(x, y, width, height, coord_type);
     }
 
     // 真实数据转为比例数据 | Convert Real Data to Scaled Data

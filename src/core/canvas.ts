@@ -1,4 +1,4 @@
-import { set_canvas_size } from '../utils/dom'; 
+import { set_canvas_size } from '../utils/dom.js'; 
 import { KeyEventHandler } from './events/key_event.js';
 import { MouseEventHandler } from './events/mouse_event.js';
 
@@ -9,7 +9,7 @@ interface MarginOptions {
     margin_bottom: number;
 }
 
-class Canvas {
+abstract class Canvas {
     public dpi: number;
     public canvas: HTMLCanvasElement;
     public context: CanvasRenderingContext2D;
@@ -40,5 +40,11 @@ class Canvas {
     get_size(): [number, number] {
         return [this.width, this.height];   
     }
+
+    show(): void {
+        this.draw();
+    }
+
+    abstract draw(): void;
 }
 export { Canvas, MarginOptions };

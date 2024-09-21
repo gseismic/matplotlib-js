@@ -110,7 +110,11 @@ class Renderer2D extends Renderer {
     rotate(angle: number) {
         this.context.rotate(angle);
     }
-    
+
+    scale(x: number, y: number) {
+        this.context.scale(x, y);
+    }
+
     save() {
         this.context.save();
     }

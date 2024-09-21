@@ -2,3 +2,4 @@ drafts/
 backup/
 node_modules/
 dist/
+*.js

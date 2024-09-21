@@ -6,28 +6,43 @@ class KeyEventHandler {
     public key_down: Signal<KeyboardEvent> = new Signal();
     public key_up: Signal<KeyboardEvent> = new Signal();
     public key_press: Signal<KeyboardEvent> = new Signal();
+    public key_repeat: Signal<KeyboardEvent> = new Signal();
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         this.setup_event_listeners();
     }
-
+    
     private setup_event_listeners(): void {
-        this.canvas.addEventListener('keydown', this.handle_key_down.bind(this));
-        this.canvas.addEventListener('keyup', this.handle_key_up.bind(this));
-        this.canvas.addEventListener('keypress', this.handle_key_press.bind(this));
+        this.canvas.addEventListener('keydown', 
+            (event: KeyboardEvent) => {
+                this.key_down.emit(event);
+                // 只在特定情况下阻止默认行为
+                if (this.should_prevent_default(event)) {
+                    event.preventDefault();
+                }
+            });
+        this.canvas.addEventListener('keyup', 
+            (event: KeyboardEvent) => {
+                this.key_up.emit(event);
+                // 只在特定情况下阻止默认行为
+                if (this.should_prevent_default(event)) {
+                    event.preventDefault();
+                }
+            });
+        this.canvas.addEventListener('keypress', 
+            (event: KeyboardEvent) => {
+                this.key_press.emit(event);
+                // 只在特定情况下阻止默认行为
+                if (this.should_prevent_default(event)) {
+                    event.preventDefault();
+                }
+            });
     }
 
-    private handle_key_down(event: KeyboardEvent): void {
-        this.key_down.emit(event);
-    }
-
-    private handle_key_up(event: KeyboardEvent): void {
-        this.key_up.emit(event);
-    }
-
-    private handle_key_press(event: KeyboardEvent): void {
-        this.key_press.emit(event);
+    private should_prevent_default(event: KeyboardEvent): boolean {
+        // 根据具体需求实现此方法
+        return false; // 默认阻止
     }
 }
 

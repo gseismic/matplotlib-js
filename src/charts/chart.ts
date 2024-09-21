@@ -1,15 +1,15 @@
-import { Figure, FigureOptions } from "../core/figure.js";
+// import { Figure, FigureOptions } from "../core/figure.js";
 
-class Chart {
-    objects: DrawableObject[] = [];
+// class Chart {
+//     objects: DrawableObject[] = [];
 
-    constructor(canvas_id: string, options: Partial<FigureOptions> = {}) {
-        super(canvas_id, options);
-    }
+//     constructor(canvas_id: string, options: Partial<FigureOptions> = {}) {
+//         super(canvas_id, options);
+//     }
 
-    add_object(object: DrawableObject) {
-        this.objects.push(object);
-    }
-}
+//     add_object(object: DrawableObject) {
+//         this.objects.push(object);
+//     }
+// }
 
-export { Chart };
+// export { Chart };

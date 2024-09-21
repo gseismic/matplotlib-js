@@ -12,7 +12,9 @@ abstract class Scaler {
         if (absStep >= 1) {
             return 0;
         } else {
-            return Math.ceil(-Math.log10(absStep));
+            // 计算小数点后有几位
+            // 10的-3次方是0.001，10的-2次方是0.01，10的-1次方是0.1，10的0次方是1，10的1次方是10，10的2次方是100，10的3次方是1000
+            return Math.ceil(-this.log10(absStep));
         }
     }
 

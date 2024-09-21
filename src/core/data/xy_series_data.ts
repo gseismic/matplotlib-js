@@ -6,7 +6,7 @@ class XYSeriesData extends SeriesData {
         super(data);
     }
 
-    get_data(): { x: any[], y: any[] } {
+    get_data(): { [key: string]: any[] } {
         return this._data;
     }
 

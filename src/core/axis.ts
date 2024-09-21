@@ -4,10 +4,21 @@ import { Line2DOptions } from './renderer/options2d.js';
 import { Scaler } from './scaler/scaler.js';
 import { LinearScaler } from './scaler/linear_scaler.js';
 import { LogScaler } from './scaler/log_scaler.js';
+import { ScaleType } from './types/scale_type.js';
 
 class AxisOptions {
+    x: number = 0;
+    y: number = 0;
+    length: number = 100;
+    min: number = 0;
+    max: number = 10;
+    label: string = '';
+    location: 'left' | 'right' | 'top' | 'bottom' = 'bottom';
+    scaler_type: ScaleType = 'linear';
+
     spine_color: string = 'black';
     spine_width: number = 1;
+    spine_style: string = 'solid';
 
     num_major_ticks: number = 5;
     num_minor_ticks: number = 2;
@@ -27,85 +38,67 @@ class AxisOptions {
 
 class Axis extends Drawable {
     protected options: AxisOptions = new AxisOptions();
-    protected x: number = 0;
-    protected y: number = 0;
-    protected length: number = 0;
-    protected min: number = 0;
-    protected max: number = 10;
-    protected label: string = '';
-    // protected is_vertical: boolean = false;
-    protected location: 'left' | 'right' | 'top' | 'bottom' = 'bottom';
     protected scaler: Scaler = new LinearScaler(0, 1);
 
-    // x, y: pixel coordinates
-    constructor(
-        x: number=0,
-        y: number=0,
-        length: number=100,
-        location: 'left' | 'right' | 'top' | 'bottom',
-        min: number=0,
-        max: number=1.0,
-        label: string = ''
-    ) {
+    constructor(options: Partial<AxisOptions> = {}) {
         super();
-        this.x = x;
-        this.y = y;
-        this.length = length;
-        this.min = min;
-        this.max = max;
-        this.label = label;
-        this.location = location;
+        this.options = { ...this.options, ...options };
+        this.set_scaler(this.options.scaler_type);
     }
 
-    set_scaler(scaler: string): void {
+    set_scaler(scaler: ScaleType): void {
         if (scaler === 'linear') {
-            this.scaler = new LinearScaler(this.min, this.max);
+            this.scaler = new LinearScaler(this.options.min, this.options.max);
         } else if (scaler === 'log') {
-            this.scaler = new LogScaler(this.min, this.max);
+            this.scaler = new LogScaler(this.options.min, this.options.max);
+        } else {
+            throw new Error(`Invalid scaler type: ${scaler}`);
         }
+        this.options.scaler_type = scaler;
+        this.mark_need_redraw();
     }
 
-    set_position(x: number, y: number): void {
-        if (this.x === x && this.y === y) {
+    set_position(x: number, y: number, length: number): void {
+        if(this.options.x === x && this.options.y === y && this.options.length === length) {
             return;
         }
-        this.x = x;
-        this.y = y;
+        this.options.x = x;
+        this.options.y = y;
+        this.options.length = length;
         this.mark_need_redraw();
     }
 
     set_range(min: number, max: number): void {
-        if (this.min === min && this.max === max) {
+        if (this.options.min === min && this.options.max === max) {
             return;
         }
-        this.min = min;
-        this.max = max;
+        this.options.min = min;
+        this.options.max = max;
         this.mark_need_redraw();
     }
 
     set_label(label: string): void {
-        if (this.label === label) {
+        if (this.options.label === label) {
             return;
         }
-        this.label = label;
+        this.options.label = label;
         this.mark_need_redraw();
     }
 
     do_draw(renderer: Renderer2D): void {
         this.draw_axis_line(renderer);
-        // this.drawTicksAndLabels(renderer, viewport);
-        // this.draw_axis_label(renderer);
+        this.draw_ticks_and_labels(renderer);
     }
 
     protected draw_axis_line(renderer: Renderer2D): void {
-        let is_vertical = this.location === 'left' || this.location === 'right';
-        const endX = is_vertical ? this.x : this.x + this.length;
-        const endY = is_vertical ? this.y + this.length : this.y;
+        let is_vertical = this.options.location === 'left' || this.options.location === 'right';
+        const endX = is_vertical ? this.options.x : this.options.x + this.options.length;
+        const endY = is_vertical ? this.options.y + this.options.length : this.options.y;
         const line_options: Partial<Line2DOptions> = {
             line_color: this.options.spine_color,
             line_width: this.options.spine_width
         };
-        renderer.draw_line(this.x, this.y, endX, endY, line_options);
+        renderer.draw_line(this.options.x, this.options.y, endX, endY, line_options);
     }
 
     protected draw_ticks_and_labels(renderer: Renderer2D): void {
@@ -119,11 +112,12 @@ class Axis extends Drawable {
         let label_align : CanvasTextAlign = 'right';
         let text_baseline : CanvasTextBaseline = 'top';
 
-        let is_vertical = this.location === 'left' || this.location === 'right';
+        // TODO: simplify
+        let is_vertical = this.options.location === 'left' || this.options.location === 'right';
         if (is_vertical) {
             for (let i = 0; i <= majorTicks.length; i++) {
                 const value = majorTicks[i];
-                tick_x = this.x;
+                tick_x = this.options.x;
                 tick_y = this.transform.transform_y(value);
 
                 if(tick_direction === 'in') {
@@ -172,7 +166,7 @@ class Axis extends Drawable {
             for (let i = 0; i <= majorTicks.length; i++) {
                 const value = majorTicks[i];
                 tick_x = this.transform.transform_x(value);
-                tick_y = this.y;
+                tick_y = this.options.y;
                 label_align = 'center';
                 // TODO: tick space to label, text_baseline
                 if(tick_direction === 'in') {
@@ -201,7 +195,7 @@ class Axis extends Drawable {
                     text_baseline = 'middle';
                 }
 
-                renderer.draw_line(tick_x, tick_y, tick_x + this.length, tick_y, {
+                renderer.draw_line(tick_x, tick_y, tick_x + this.options.length, tick_y, {
                     line_color: this.options.major_tick_color,
                     line_width: this.options.major_tick_width
                 });

@@ -7,4 +7,4 @@ export { Figure } from './core/figure.js';
 // export { ScatterPlot } from './scatter_plot';
 // export { CandlestickChart } from './candlestick_chart';
 // export { Line } from './line';
-export { KLine } from './artists/finance/kline.js';
+// export { KLine } from './artists/finance/kline.js';

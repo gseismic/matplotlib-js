@@ -1,26 +1,34 @@
-import { Transform, Transform2D } from './transform/transform.js';
-import { BoundingBox2D } from './bounding_box.js';
+import { BoundingBox } from './bounding_box.js';
+import { Transform2D, DataTransform2D, AxesTransform2D } from './transform/index.js';
+import { deepEqual } from '../utils/dict.js';
 
 abstract class Drawable {
     protected zorder: number = 0;
     protected visible: boolean = true;
     protected interactive: boolean = true;
-    protected coord_type: string = 'data';
+    protected coord_type: 'data' | 'axes' = 'data';
 
     protected need_redraw: boolean = true;
 
-    protected data: any|null = null ;
+    protected data: any|null = null;
     protected data_view: any|null = null; // view of data
     protected options: any|null = null;
-    protected transform: Transform2D | null = null;
+    protected transform: Transform2D;
 
     protected data_changed: boolean = true;
     protected options_changed: boolean = true;
     protected data_view_changed: boolean = true;
     protected transform_changed: boolean = true;
 
-    constructor(coord_type: string = 'data') {
+    constructor(coord_type: 'data' | 'axes' = 'data') {
         this.coord_type = coord_type;
+        if (this.coord_type === 'data') {
+            this.transform = new AxesTransform2D();
+        } else if (this.coord_type === 'axes') {
+            this.transform = new DataTransform2D();
+        } else {
+            throw new Error(`Invalid coordinate type: ${this.coord_type}`);
+        }
     }
 
     set_visible(visible: boolean): void {
@@ -36,7 +44,7 @@ abstract class Drawable {
     }
 
     set_transform(transform: Transform2D): void {
-        if (this.transform !== transform) {
+        if (!this.transform.is_equal(transform)) {
             this.transform = transform;
             this.transform_changed = true;
             this.after_transform_changed(transform);
@@ -51,7 +59,7 @@ abstract class Drawable {
     }
 
     set_options(options: any): void {
-        if (this.options !== options) {
+        if (!deepEqual(this.options, options)) {
             this.options = options;
             this.options_changed = true;
             this.after_options_changed(options);
@@ -59,6 +67,7 @@ abstract class Drawable {
     }
 
     set_data_view(data_view: any): void {
+        // TODO: 使用deepEqual
         if (this.data_view !== data_view) {
             this.data_view = data_view;
             this.data_view_changed = true;
@@ -67,15 +76,18 @@ abstract class Drawable {
     }
 
     draw(renderer: any, enforce: boolean = false): void {
-        if (this.visible) {
-            if (enforce || (this.transform_changed || this.options_changed || this.data_changed || this.data_view_changed)) {
-                this.do_draw(renderer);
-            }
-            this.transform_changed = false;
-            this.options_changed = false;
-            this.data_changed = false;
-            this.data_view_changed = false;
+        if(!this.visible) {
+            return;
         }
+        // should_redraw() 人工设置的标记 | sign, manually set by `mark_need_redraw()`
+        // 当`enforce`为真时，强制重绘 | force to redraw when `enforce` is true
+        if (enforce || this.should_redraw() ||(this.transform_changed || this.options_changed || this.data_changed || this.data_view_changed)) {
+            this.do_draw(renderer);
+        }
+        this.transform_changed = false;
+        this.options_changed = false;
+        this.data_changed = false;
+        this.data_view_changed = false;
     }
 
     draw_legend(renderer: any, px: number, py: number, width: number, height: number): void {}
@@ -83,7 +95,7 @@ abstract class Drawable {
     after_data_view_changed(data_view: any): void {}
     after_data_changed(data: any): void {}
     after_options_changed(options: any): void {}
-    after_transform_changed(transform: Transform): void {}
+    after_transform_changed(transform: Transform2D): void {}
 
     abstract do_draw(renderer: any): void;
 

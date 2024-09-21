@@ -13,8 +13,8 @@ class DataTransform2D extends Transform2D {
     private _inv_xScale: number = 1; // x轴缩放比例的倒数 | Inverse of X Axis Scale
     private _inv_yScale: number = 1; // y轴缩放比例的倒数 | Inverse of Y Axis Scale
 
-    constructor(x: number, y: number, width: number, height: number) {
-        super(x, y, width, height);
+    constructor(x: number=0, y: number=0, width: number=100, height: number=100, coord_type: 'data' | 'axes' = 'data') {
+        super(x, y, width, height, coord_type);
     }
 
     after_set_xlim(xlim: [number, number]): void {

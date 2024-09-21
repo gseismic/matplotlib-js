@@ -18,6 +18,7 @@ class BoundingBox {
     }
 }
 
+/*
 class BoundingBox3D {
     x: number;
     y: number;
@@ -39,5 +40,6 @@ class BoundingBox3D {
         return x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + this.height && z >= this.z && z <= this.z + this.depth;
     }
 }
+*/
 
 export { BoundingBox };

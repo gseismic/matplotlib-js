@@ -5,14 +5,19 @@ class LinearScaler extends Scaler {
         const range = this.vmax - this.vmin;
         const idealStep = range / (numMajorTicks - 1);
 
-        // Find the best step size that is a multiple of 1, 2, or 5
-        const magnitude = Math.pow(10, Math.floor(this.log10(idealStep)));
-        let step: number = 0.001;
-        for (const stepSize of [0.1, 0.2, 0.5, 1, 2, 5, 10]) {
-            if (stepSize * magnitude >= idealStep) {
-                step = stepSize * magnitude;
-                break;
-            }
+        // 使用更简单的方法计算步长
+        const exponent = Math.floor(this.log10(idealStep));
+        const fraction = idealStep / Math.pow(10, exponent);
+        let step: number;
+
+        if (fraction < 1.5) {
+            step = Math.pow(10, exponent);
+        } else if (fraction < 3) {
+            step = 2 * Math.pow(10, exponent);
+        } else if (fraction < 7.5) {
+            step = 5 * Math.pow(10, exponent);
+        } else {
+            step = 10 * Math.pow(10, exponent);
         }
 
         // Calculate new number of major ticks
