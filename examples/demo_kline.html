@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>K线图示例</title>
+</head>
+<body>
+    <canvas id="myCanvas" width="800" height="600"></canvas>
+    <script type="module">
+        import { Figure, KLine } from '../dist/finchart/index.js';
+        // import { create_kline_data } from './utils.js';
+
+        const fig = new Figure('myCanvas');
+        const ax = fig.add_subplot(1, 1, 1);
+
+        // 创建K线数据
+        const kline_data = {
+            'open': [10, 12, 15],
+            'high': [15, 18, 20],
+            'low': [8, 10, 13],
+            'close': [12, 15, 14],
+            'timestamp': [1, 2, 3]
+        };
+
+        // 创建并添加K线图
+        const kline = new KLine(kline_data, { up_color: 'red', down_color: 'green' });
+        ax.add(kline);
+
+        // 设置坐标轴范围和标签
+        ax.set_xlim(0, kline_data.length + 1);
+        ax.set_ylim(0, 25);
+        ax.set_xlabel('时间');
+        ax.set_ylabel('价格');
+
+        fig.show();
+    </script>
+</body>
+</html>

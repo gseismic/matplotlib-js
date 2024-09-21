@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Surface from Points</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script type="module">
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.151.3/build/three.module.js';
+
+        // 创建场景、相机和渲染器
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // 输入点数据，格式为 [x, y, v]
+        const points = [
+            [0, 0, 0],
+            [1, 0, 1],
+            [0, 1, 1],
+            [1, 1, 0],
+            [0.5, 0.5, 1]
+        ];
+
+        // 创建顶点数组
+        const vertices = [];
+        for (const point of points) {
+            vertices.push(point[0], point[1], point[2]); // x, y, v
+        }
+
+        // 创建几何体
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
+        // 创建面片（根据需要手动定义）
+        const indices = [
+            0, 1, 2, // 第一个三角形
+            1, 3, 2, // 第二个三角形
+            0, 1, 4, // 第三个三角形
+            1, 3, 4, // 第四个三角形
+            2, 3, 4  // 第五个三角形
+        ];
+        geometry.setIndex(indices);
+
+        // 创建材质
+        const material = new THREE.MeshPhongMaterial({ color: 0x44aa88, side: THREE.DoubleSide, flatShading: true });
+        
+        // 创建网格并添加到场景
+        const surface = new THREE.Mesh(geometry, material);
+        scene.add(surface);
+
+        // 添加光源
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(0, 5, 10);
+        scene.add(light);
+
+        // 设置相机位置
+        camera.position.z = 5;
+        // 渲染循环
+        function animate() {
+            requestAnimationFrame(animate);
+            surface.rotation.x += 0.01;
+            surface.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+digraph name1 {
+	A [label=Start]
+	B [label=Process]
+	C [label=End]
+	A -> B
+	B -> C
+}

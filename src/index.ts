@@ -1,4 +1,4 @@
-export { Figure } from './figure.js';
+export { Figure } from './core/figure.js';
 // export { Line } from './line.js';
 // export { Circle } from './circle.js';
 // export { Rectangle } from './rectangle.js';
@@ -7,3 +7,4 @@ export { Figure } from './figure.js';
 // export { ScatterPlot } from './scatter_plot';
 // export { CandlestickChart } from './candlestick_chart';
 // export { Line } from './line';
+export { KLine } from './artists/finance/kline.js';
