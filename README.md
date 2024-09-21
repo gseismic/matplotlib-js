@@ -1,9 +1,14 @@
-# mchart.js
+# mchart.js[draft-not-done]
 mchart.js 是一个用于创建类似于matplotlib图的JavaScript库。
 | mchart.js is a JavaScript library for creating `matplotlib-like` charts. 
 
 这个库只是为了满足`个人`绘制可定制化图表的需求。
 | it is only to meet my `personal` needs of drawing customizable charts.
+
+`NOT-DONE`
+
+## Status
+draft & not-usable
 
 ## 设计初衷 Design Intentions
 - 同时绘制多个Chart | draw multiple charts together
@@ -78,52 +83,6 @@ npm install -g live-server
 
 # 运行测试服务器, 打开http://localhost:8080/examples/demo_hello.html | run test server, open http://localhost:8080/examples/demo_hello.html 
 live-server
-```
-
-## 使用 | Usage
-
-```javascript
-import { Figure } from 'mchart.js';
-
-const figure = new Figure();
-```
-
-### html
-TODO: not-done
-```html
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>Matplotlib.js Demo</title>
-</head>
-<body>
-    <canvas id="myCanvas" width="800" height="600"></canvas>
-    <script type="module">
-        import { Figure } from '../dist/finchart/index.js';
-
-        const fig = new Figure('myCanvas');
-        const ax = fig.add_subplot(1, 1, 1);
-
-        // 绘制折线图
-        const x = [1, 2, 3, 4, 5, 3];
-        const y = [2, 4, 1, 5, 3, 3];
-        ax.plot(x, y, { color: 'blue' });
-
-        // 绘制散点图
-        // const x2 = [1.5, 2.5, 3.5, 4.5, 30];
-        // const y2 = [3, 1, 4, 2, 30];
-        ax.scatter(x, y, { c: 'red', s: 8 });
-
-        // 设置坐标轴范围和标签
-        ax.set_xlim(0, 60);
-        ax.set_ylim(0, 60);
-        ax.set_xlabel('X轴');
-        ax.set_ylabel('Y轴');
-
-        fig.show();
-    </script>
-</body>
-</html>
 ```
 
 ## 参考资料 | References
