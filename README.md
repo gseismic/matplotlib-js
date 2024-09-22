@@ -1,14 +1,11 @@
-# mchart.js[draft-not-done]
-mchart.js 是一个用于创建类似于matplotlib图的JavaScript库。
-| mchart.js is a JavaScript library for creating `matplotlib-like` charts. 
+# matplotlib.js/mchart.js
+matplotlib.js/mchart.js 是一个用于创建类似于matplotlib图的JavaScript库。
+| matplotlib.js/mchart.js is a JavaScript library for creating `matplotlib-like` charts. 
 
 这个库只是为了满足`个人`绘制可定制化图表的需求。
 | it is only to meet my `personal` needs of drawing customizable charts.
 
 `NOT-DONE`
-
-## Status
-draft & not-usable
 
 ## 设计初衷 Design Intentions
 - 同时绘制多个Chart | draw multiple charts together
