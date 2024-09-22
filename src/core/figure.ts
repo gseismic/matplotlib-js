@@ -26,9 +26,13 @@ class Figure extends Canvas {
   //   this.options = options;
   // }
 
-  add_subplot(nrows: number, ncols: number, i_row: number, i_col: number, 
+  add_subplot(nrows: number, ncols: number, i_row: number=0, i_col: number=0, 
               wspace: number = 20, hspace: number = 20): Axes 
   {
+    if(i_row < 0 || i_col < 0 || i_row >= nrows || i_col >= ncols) {
+      throw new Error('Invalid subplot index');
+    }
+    console.log('this.client_rect: ', this.client_rect);
     let x = this.client_rect[0] + i_col * (this.client_rect[2] + wspace) / ncols;
     let y = this.client_rect[1] + i_row * (this.client_rect[3] + hspace) / nrows;
     let width = (this.client_rect[2] - (ncols - 1) * wspace) / ncols;
@@ -38,12 +42,16 @@ class Figure extends Canvas {
     this.scenes.push(axes);
     this.scenes.sort((a, b) => a.zorder - b.zorder);
 
+    console.log(axes);
     return axes;
   }
 
   draw(): void {
+    console.log('figure draw ..');
     this.renderer.clear_rect(0, 0, this.width, this.height);
+    console.log('all scenes', this.scenes);
     for (const scene of this.scenes) {
+      console.log('my-scene', scene);
       scene.render(this.renderer, false); // clear: false
     }
     this.renderer.flush();
@@ -64,7 +72,7 @@ class Figure extends Canvas {
   }
 
   on_mouse_move(position: Point): void {
-    console.log(position);
+    // console.log(position);
   }
 }
 

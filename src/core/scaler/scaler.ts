@@ -1,10 +1,16 @@
 abstract class Scaler {
     protected vmin: number;
     protected vmax: number;
-
-    constructor(vmin: number, vmax: number) {
+    protected clip: boolean;
+    constructor(vmin: number, vmax: number, clip: boolean = true) {
         this.vmin = vmin;
         this.vmax = vmax;
+        this.clip = clip;
+    }
+
+    set_lim(min: number, max: number): void {
+        this.vmin = min;
+        this.vmax = max;
     }
 
     protected calculatePrecision(step: number): number {
@@ -25,6 +31,13 @@ abstract class Scaler {
         newNumMinorTicks: number,
         precision: number
     };
+
+    protected clipValue(value: number): number {
+        if (this.clip) {
+            return Math.max(this.vmin, Math.min(this.vmax, value));
+        }
+        return value;
+    }
 
     protected log10(x: number): number {
         return Math.log(x) / Math.LN10;

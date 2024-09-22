@@ -26,9 +26,15 @@ class LinearScaler extends Scaler {
         const newNumMajorTicks = Math.floor((end - start) / step) + 1;
 
         // Calculate major tick positions
+        console.log('start, end, step, newNumMajorTicks', start, end, step, newNumMajorTicks);
+        console.log('this.vmin, this.vmax', this.vmin, this.vmax);
         const majorTicks: number[] = [];
         for (let i = 0; i < newNumMajorTicks; i++) {
-            majorTicks.push(start + i * step);
+            const majorTick = start + i * step;
+            if (majorTick > this.vmax) {
+                break;
+            }
+            majorTicks.push(majorTick);
         }
 
         // Calculate minor tick positions
@@ -36,7 +42,11 @@ class LinearScaler extends Scaler {
         const minorTicks: number[] = [];
         for (let i = 0; i < majorTicks.length - 1; i++) {
             for (let j = 1; j < 5; j++) {
-                minorTicks.push(majorTicks[i] + j * minorStep);
+                const minorTick = majorTicks[i] + j * minorStep;
+                if (minorTick > this.vmax) {
+                    break;
+                }
+                minorTicks.push(minorTick);
             }
         }
         const precision = this.calculatePrecision(step);

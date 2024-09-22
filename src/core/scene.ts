@@ -124,6 +124,7 @@ class Scene {
             this.drawables.sort((a, b) => a.zorder - b.zorder);
             this.element_changed = false;
         }
+        console.log('drawables: ', this.drawables.length, this.drawables);
         for (const drawable of this.drawables) {
             if(this.data_transform_changed && drawable.get_coord_type() == 'data') {
                 drawable.set_transform(this.data_transform);
@@ -131,6 +132,7 @@ class Scene {
             if(this.axes_transform_changed && drawable.get_coord_type() == 'axes') {
                 drawable.set_transform(this.axes_transform);
             }
+            console.log('\tdrawing: ', drawable);
             drawable.draw(renderer);
         }
         this.data_transform_changed = false;

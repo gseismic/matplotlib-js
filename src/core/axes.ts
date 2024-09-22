@@ -3,6 +3,9 @@ import { Renderer2D } from './renderer/renderer2d.js';
 import { Legend, LegendOptions } from './legend.js';
 import {Axis } from './axis.js'
 import { ScaleType } from './types/scale_type.js';
+import { Line2D, Line2DOptions, Line2DData } from '../artists/line2d.js';
+import { Point2D, Point2DData, Point2DOptions } from '../artists/point2d.js';
+
 
 // 管理直角坐标系数据的Scene | Scene for managing coordinate data
 class Axes extends Scene {
@@ -35,13 +38,20 @@ class Axes extends Scene {
 
     constructor(options: Partial<SceneOptions> = {}) {
         super(options);
+        // console.log('Axes options: ', this.options);
+        // console.log('options: ', options);
         this.options = { ...this.options, ...options };
+        // console.log('Axes options after: ', this.options);
         this._spines = {
-            top: new Axis({location: 'top'}),
-            bottom: new Axis({location: 'bottom'}),
-            left: new Axis({location: 'left'}),
-            right: new Axis({location: 'right'})
+            top: new Axis({x: this.options.x, y: this.options.y, length: this.options.width, location: 'top', min: this.options.xlim[0], max: this.options.xlim[1]}),
+            bottom: new Axis({x: this.options.x, y: this.options.y + this.options.height, length: this.options.width, location: 'bottom', min: this.options.xlim[0], max: this.options.xlim[1]}),
+            left: new Axis({x: this.options.x, y: this.options.y, length: this.options.height, location: 'left', min: this.options.ylim[0], max: this.options.ylim[1]}),
+            right: new Axis({x: this.options.x + this.options.width, y: this.options.y, length: this.options.height, location: 'right', min: this.options.ylim[0], max: this.options.ylim[1]})
         };
+        this.add(this._spines.top);
+        this.add(this._spines.bottom);
+        this.add(this._spines.left);
+        this.add(this._spines.right);
     }
 
     get spines() {
@@ -49,23 +59,39 @@ class Axes extends Scene {
     }
 
     set_xscale(value: ScaleType) {
+        this.options.xscale = value;
         this.spines.bottom.set_scaler(value);
         this.spines.top.set_scaler(value);
     }
 
     set_yscale(value: ScaleType) {
+        this.options.yscale = value;
         this.spines.left.set_scaler(value);
         this.spines.right.set_scaler(value);
     }
 
     set_xlabel(label: string) {
+        this.options.xlabel = label;
         this.spines.bottom.set_label(label);
         this.spines.top.set_label(label);
     }
 
     set_ylabel(label: string) {
+        this.options.ylabel = label;
         this.spines.left.set_label(label);
         this.spines.right.set_label(label);
+    }
+
+    set_xlim(min: number, max: number) {
+        super.set_xlim(min, max);
+        this.spines.bottom.set_lim(min, max);
+        this.spines.top.set_lim(min, max);
+    }
+
+    set_ylim(min: number, max: number) {
+        super.set_ylim(min, max);
+        this.spines.left.set_lim(min, max);
+        this.spines.right.set_lim(min, max);
     }
 
     set_title(title: string) {
@@ -136,6 +162,24 @@ class Axes extends Scene {
     add_patch(patch: any) {
         // 向图形中添加形状（如矩形、圆形等）的具体实现
     }
+
+    plot(x: number[], y: number[], options: Partial<Line2DOptions> = {}) {
+        // 绘制折线图的具体实现
+        const data = new Line2DData(x, y);
+        const line = new Line2D(data, options);
+        this.add(line);
+        return line;
+    }
+
+    scatter(x: number[], y: number[], options: Partial<Point2DOptions> = {}) {
+        // 绘制散点图的具体实现
+        const data = new Point2DData(x, y);
+        const point = new Point2D(data, options);
+        this.add(point);
+        return point;
+    }
+
+
 }
 
 export { Axes };

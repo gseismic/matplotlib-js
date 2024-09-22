@@ -10,9 +10,9 @@ abstract class Drawable {
 
     protected need_redraw: boolean = true;
 
-    protected data: any|null = null;
-    protected data_view: any|null = null; // view of data
-    protected options: any|null = null;
+    protected data: any = null;
+    protected data_view: any = null; // view of data
+    protected options: any = null; // 绘图选项 | drawing options
     protected transform: Transform2D;
 
     protected data_changed: boolean = true;
@@ -98,6 +98,10 @@ abstract class Drawable {
     after_transform_changed(transform: Transform2D): void {}
 
     abstract do_draw(renderer: any): void;
+
+    should_recalculate(): boolean {
+        return this.transform_changed || this.data_changed;
+    }
 
     should_redraw(): boolean {
         return this.need_redraw;

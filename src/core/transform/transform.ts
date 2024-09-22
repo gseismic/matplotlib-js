@@ -33,6 +33,8 @@ abstract class Transform2D extends Transform {
     abstract transform(x: number, y: number): [number, number];
     abstract transform_x(x: number): number;
     abstract transform_y(y: number): number;
+    abstract transform_batch(x: number[], y: number[]): [number[], number[]];
+    abstract inverse_transform_batch(x_p: number[], y_p: number[]): [number[], number[]];
 
     // 将绘图坐标转换为数据坐标 | Convert Plotting Coordinates to Data Coordinates
     abstract inverse_transform(x_p: number, y_p: number): [number, number];

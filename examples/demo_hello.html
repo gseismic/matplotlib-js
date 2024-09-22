@@ -1,32 +1,40 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <title>Matplotlib.js Demo</title>
 </head>
 <body>
-    <canvas id="myCanvas" width="800" height="600"></canvas>
+    <canvas id="myCanvas" width="800" height="600" style="border: 1px solid black; background-color:red;"></canvas>
     <script type="module">
-        import { Figure } from '../dist/finchart/index.js';
+        import { Figure } from '../dist/mchart/index.js';
 
         const fig = new Figure('myCanvas');
-        const ax = fig.add_subplot(1, 1, 1);
+        const ax = fig.add_subplot(2, 2, 0, 0);
 
-        // 绘制折线图
+        // 绘制折线图 | draw line plot
         const x = [1, 2, 3, 4, 5, 3];
         const y = [2, 4, 1, 5, 3, 3];
-        ax.plot(x, y, { color: 'blue' });
+        ax.plot(x, y, { color: 'green' });
 
-        // 绘制散点图
-        // const x2 = [1.5, 2.5, 3.5, 4.5, 30];
-        // const y2 = [3, 1, 4, 2, 30];
-        ax.scatter(x, y, { c: 'red', s: 8 });
+        // 绘制散点图 | draw scatter plot
+        const x2 = [1.5, 2.5, 3.5, 4.5, 30];
+        const y2 = [3, 1, 4, 2, 30];
+        ax.scatter(x2, y2, { color: 'red', size: 8 });
 
-        // 设置坐标轴范围和标签
-        ax.set_xlim(0, 60);
-        ax.set_ylim(0, 60);
-        ax.set_xlabel('X轴');
-        ax.set_ylabel('Y轴');
+        // 设置坐标轴范围和标签 | set axes limits and labels    
+        ax.set_xlim(0, 6);
+        ax.set_ylim(0, 6);
+        ax.set_xlabel('X');
+        ax.set_ylabel('Y');
+
+        const ax2 = fig.add_subplot(2, 2, 0, 1);
+        ax2.plot(x, y, { color: 'blue' });
+        ax2.set_xlim(0, 6);
+        ax2.set_ylim(0, 6);
+        ax2.set_xlabel('X');
+        ax2.set_ylabel('Y');
 
         fig.show();
     </script>

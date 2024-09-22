@@ -1,15 +1,15 @@
 
 
 class Line2DOptions {
+    color: string = 'black';
     line_width: number = 1;
-    line_color: string = 'black';
     line_style: string = 'solid';
     line_cap: CanvasLineCap = 'butt';
 }
 
 class Point2DOptions {
-    point_color: string = 'black';
-    point_size: number = 2;
+    color: string = 'black';
+    size: number = 2;
     edge_color: string = 'black';
     edge_width: number = 1;
 }

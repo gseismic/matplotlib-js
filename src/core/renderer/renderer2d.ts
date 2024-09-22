@@ -22,7 +22,7 @@ interface Render2DOptions {
 }
 
 class Renderer2D extends Renderer {
-    protected context: CanvasRenderingContext2D;
+    public context: CanvasRenderingContext2D;
     private imageDrawer: ImageDrawer;
 
     private defaultOptions: Render2DOptions = {
@@ -37,14 +37,14 @@ class Renderer2D extends Renderer {
 
     private defaultLineOptions: Line2DOptions = {
         line_width: 1,
-        line_color: 'black',
+        color: 'black',
         line_style: 'solid',
         line_cap: 'butt'
     };
 
     private defaultPointOptions: Point2DOptions = {
-        point_size: 2,
-        point_color: 'black',
+        size: 2,
+        color: 'black',
         edge_color: 'black',
         edge_width: 1
     };
@@ -147,8 +147,8 @@ class Renderer2D extends Renderer {
     apply_line_options(options?: Partial<Line2DOptions>) {
         options = { ...this.defaultLineOptions, ...options };
         let canvas_options: Partial<Render2DOptions> = { }
-        if (options?.line_color) {
-            canvas_options["strokeStyle"] = options.line_color;
+        if (options?.color) {
+            canvas_options["strokeStyle"] = options.color;
         }
         if (options?.line_width) {
             canvas_options["lineWidth"] = options.line_width;
@@ -209,8 +209,8 @@ class Renderer2D extends Renderer {
     apply_point_options(options?: Partial<Point2DOptions>) {
         options = { ...this.defaultPointOptions, ...options };  
         let canvas_options: Partial<Render2DOptions> = {};
-        if (options?.point_color) {
-            canvas_options["fillStyle"] = options.point_color;
+        if (options?.color) {
+            canvas_options["fillStyle"] = options.color;
         }
         if (options?.edge_color) {
             canvas_options["strokeStyle"] = options.edge_color;
@@ -224,7 +224,7 @@ class Renderer2D extends Renderer {
     draw_point(x: number, y: number, options?: Partial<Point2DOptions>) {
         this.context.save();
         this.apply_point_options(options);
-        let radius = (options?.point_size) ?? this.defaultPointOptions.point_size;
+        let radius = (options?.size) ?? this.defaultPointOptions.size;
         // Note: a ?? b:如果 a 是 null 或 undefined，则返回 b
         // if a is null or undefined, return b
         this.context.beginPath();
@@ -237,12 +237,13 @@ class Renderer2D extends Renderer {
     draw_points(xs: number[], ys: number[], options?: Partial<Point2DOptions>) {
         this.context.save();
         this.apply_point_options(options);
-        let radius = (options?.point_size) ?? this.defaultPointOptions.point_size;
-        this.context.beginPath();
+        let radius = (options?.size) ?? this.defaultPointOptions.size;
         for (let i = 0; i < xs.length; i++) {
+            this.context.beginPath();
             this.context.arc(xs[i], ys[i], radius, 0, 2 * Math.PI);
+            this.context.fill();
+            this.context.stroke();
         }
-        this.context.fill();
         this.context.restore();
         return this;
     }

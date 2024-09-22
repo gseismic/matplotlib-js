@@ -1,5 +1,5 @@
 drafts/
 backup/
 node_modules/
-dist/
+#dist/
 *.js
