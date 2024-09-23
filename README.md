@@ -110,6 +110,9 @@ matplotlib.js/mchart.js 是一个用于创建类似于matplotlib图的JavaScript
     - [ ] Image 图像 | Image
     - [ ] Legend 图例 | Legend
     - [ ] KLine 蜡烛图 | KLine
+- [ ] Animation 动画 | Animation
+    - [ ] AnimationFrame 动画帧 | Animation Frame
+    - [ ] AnimationPlayer 动画播放器 | Animation Player
 
 ## 安装 | Installation
 你可以使用npm安装mchart.js:
