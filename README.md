@@ -1,20 +1,13 @@
 # matplotlib.js/mchart.js
-matplotlib.js/mchart.js 是一个用于创建类似于matplotlib图的JavaScript库。
-| matplotlib.js/mchart.js is a JavaScript library for creating `matplotlib-like` charts. 
-
-这个库只是为了满足`个人`绘制可定制化图表的需求。
-| it is only to meet my `personal` needs of drawing customizable charts.
+A chart lib with matplotlib-like api to draw customizable charts.
 
 `NOT-DONE`
 
 ## 设计初衷 Design Intentions
-- 同时绘制多个Chart | draw multiple charts together
+- 支持多Chart | multiple charts
 - 控制所有绘图细节 | control all drawing details
-- 方便二次开发 | Easy to develop new features
-- 高性能，数据局部更新 | High performance, data partial update
-- 轻量级，代码简洁，扩展方便 | Lightweight, simple code, easy to extend
-- matplotlib风格的API | matplotlib-style API
-- 易于使用 | Easy to use
+- 高性能的数据局部更新 | data partial update
+- matplotlib风格API | matplotlib-style API
 
 ## Examples
 - [Hello](./examples/demo_hello.html)
@@ -62,25 +55,6 @@ matplotlib.js/mchart.js 是一个用于创建类似于matplotlib图的JavaScript
 </html>
 ```
 
-## 不是什么 Not Intended to be
-- 全能的绘图库 | All-purpose plotting library
-- 替代品 | Replacement for other libraries
-
-## 应用场景 | Application Scenarios
-- [ ] 插件开发 | Plugin development
-- [ ] 科学计算 | Scientific computing
-- [ ] 数据分析 | Data analysis
-- [ ] 金融图表 | Financial charts
-
-## 命名&接口规则 Naming & Interface Rules
-- Drawable类型使用options对象进行配置 | Drawable types use options objects for configuration
-- 非Drawable类型使用非options对象进行配置 | Non-drawable types use non-options objects for configuration
-- 函数/类等命名使用matplotlib-python风格 | Function/class names use matplotlib-python style
-    - 类名使用大驼峰命名法 | Class names use Camel case
-    - 函数名使用下划线命名法 | Function names use underscore case
-    - 常量名、枚举值使用全大写 | Constant names, enum values use upper case
-    - 目录/文件名使用全小写 | Directory/file names use lower case
-
 ## 类 | Classes
 - [ ] Core 核心
     - [x] Canvas 画布 | Canvas
@@ -115,7 +89,7 @@ matplotlib.js/mchart.js 是一个用于创建类似于matplotlib图的JavaScript
     - [ ] AnimationPlayer 动画播放器 | Animation Player
 
 ## 安装 | Installation
-你可以使用npm安装mchart.js:
+基于npm安装mchart.js:
 
 ```bash
 # 安装typescript | install typescript
